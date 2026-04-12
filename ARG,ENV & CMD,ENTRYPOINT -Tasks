@@ -13,6 +13,62 @@ Install:
 Dev deps for dev
 Only prod deps for prod
 Enable debug flags only in dev
+
+
+Ans.
+# -------------------------------
+# Build Stage
+# -------------------------------
+FROM node:18-alpine AS build
+
+WORKDIR /app
+
+# Build argument
+ARG BUILD_ENV=prod
+
+# Set environment
+ENV NODE_ENV=$BUILD_ENV
+
+# Copy dependency files
+COPY package*.json ./
+
+# Install dependencies based on environment
+RUN if [ "$BUILD_ENV" = "prod" ]; then \
+      npm ci --only=production; \
+    else \
+      npm install; \
+    fi
+
+# Copy source code
+COPY . .
+
+# Build app (if applicable)
+RUN npm run build || echo "No build step"
+
+# -------------------------------
+# Runtime Stage
+# -------------------------------
+FROM node:18-alpine
+
+WORKDIR /app
+
+ARG BUILD_ENV=prod
+ENV NODE_ENV=$BUILD_ENV
+
+# Copy built app
+COPY --from=build /app .
+
+# Enable debug only in dev
+RUN if [ "$BUILD_ENV" = "dev" ]; then \
+      echo "Debug mode enabled"; \
+    fi
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ✅ Task 2: Version Pinning & Dynamic Images
 
 👉 Make base image dynamic
