@@ -1,0 +1,210 @@
+🔧 🔥 ADVANCED TASKS: ARG, ENV, CMD, ENTRYPOINT
+🧱 1. ARG (Build-Time – Advanced Use Cases)
+✅ Task 1: Multi-Environment Build Strategy
+
+👉 Build one Dockerfile that behaves differently for:
+
+dev
+staging
+prod
+Requirements:
+Use ARG BUILD_ENV
+Install:
+Dev deps for dev
+Only prod deps for prod
+Enable debug flags only in dev
+✅ Task 2: Version Pinning & Dynamic Images
+
+👉 Make base image dynamic
+
+Requirement:
+docker build --build-arg NODE_VERSION=20 .
+Validate version is passed
+Fail build if not provided
+✅ Task 3: Secure Build Secrets (Critical)
+
+👉 Pass secrets using ARG but ensure:
+
+Not available in final image
+Not visible in docker history
+
+👉 Bonus:
+
+Use multi-stage to hide secrets
+✅ Task 4: Feature Flag Build
+
+👉 Enable/disable feature at build time
+
+Example:
+
+ENABLE_ANALYTICS=true
+Modify build output accordingly
+🌍 2. ENV (Runtime – Production Patterns)
+✅ Task 5: Environment-Driven App Behavior
+
+👉 App should behave differently based on:
+
+NODE_ENV
+LOG_LEVEL
+REGION
+✅ Task 6: External Configuration Injection
+
+👉 Pass runtime configs:
+
+docker run -e DB_HOST=db.prod -e API_URL=xyz myapp
+Task:
+Ensure app dynamically picks values
+No rebuild required
+✅ Task 7: ENV + Secrets Integration
+
+👉 Simulate:
+
+DB password via ENV
+Later migrate to secret manager (mock)
+
+👉 Validate:
+
+App fails if ENV missing
+✅ Task 8: ENV Validation Layer
+
+👉 Add startup validation:
+
+If required ENV not present → container exits
+⚙️ 3. CMD (Execution Control)
+✅ Task 9: Flexible Startup Command
+
+👉 Default:
+
+npm start
+
+👉 But allow override:
+
+docker run myapp npm run worker
+✅ Task 10: Multi-Mode Execution
+
+👉 Based on CMD argument:
+
+api → run API server
+worker → run background worker
+cron → run scheduler
+✅ Task 11: Debug Mode Support
+
+👉 Allow:
+
+docker run myapp npm run debug
+
+👉 Ensure:
+
+Debug tools enabled only when needed
+🚀 4. ENTRYPOINT (Production Control Layer)
+✅ Task 12: Smart Entrypoint Script
+
+👉 Create entrypoint.sh that:
+
+Validates ENV
+Waits for DB (retry logic)
+Runs migrations
+Starts app
+✅ Task 13: Signal Handling (VERY IMPORTANT)
+
+👉 Ensure:
+
+Proper handling of SIGTERM, SIGINT
+Graceful shutdown
+
+👉 Use:
+
+exec "$@"
+✅ Task 14: Dynamic Routing Logic
+
+👉 Based on ENV:
+
+MODE=worker
+MODE=api
+
+👉 Entrypoint decides what to run
+
+✅ Task 15: Sidecar-Compatible Entrypoint
+
+👉 Make container compatible with:
+
+Kubernetes sidecars
+Init containers
+🔥 5. COMBINED REAL-WORLD TASK (INTERVIEW LEVEL)
+✅ Task 16: Production-Ready Dockerfile
+Requirements:
+Use ARG for build config
+Use ENV for runtime config
+Use ENTRYPOINT for startup logic
+Use CMD as default command
+Expected behavior:
+docker build --build-arg BUILD_ENV=prod .
+docker run -e MODE=worker myapp
+Features:
+Multi-stage build
+Non-root user
+Healthcheck
+Dynamic startup
+🧠 6. SCENARIO-BASED TASKS (VERY IMPORTANT)
+✅ Task 17: Debug Broken Container
+
+👉 Issue:
+
+ENV not passed correctly
+App crashes
+
+👉 Fix using:
+
+docker inspect
+Logging
+ENTRYPOINT debugging
+✅ Task 18: Reduce Image Size
+
+👉 Current: 1GB
+👉 Target: <200MB
+
+Use:
+
+Multi-stage
+ARG for build tools
+Remove unnecessary ENV
+✅ Task 19: Kubernetes Compatibility
+
+👉 Ensure:
+
+ENV works with ConfigMaps
+ENTRYPOINT works with probes
+CMD works with overrides
+✅ Task 20: CI/CD Integration
+
+👉 Pipeline should:
+
+Pass ARG during build
+Inject ENV at runtime
+Override CMD for testing stage
+💣 Interview-Level Trick Scenarios
+❓ What happens here?
+ENTRYPOINT ["npm"]
+CMD ["start"]
+
+👉 Answer:
+
+npm start
+❓ Override behavior
+docker run myapp run test
+
+👉 Runs:
+
+npm run test
+❓ ARG vs ENV trap
+ARG not available at runtime ❌
+ENV persists ✅
+🚀 Final Takeaway (4-Year DevOps Level)
+
+At your level, you’re expected to:
+
+Design flexible Dockerfiles
+Support multiple environments
+Ensure security & optimization
+Integrate with Kubernetes & CI/CD
+Debug real production issues
