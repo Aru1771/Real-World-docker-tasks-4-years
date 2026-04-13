@@ -77,6 +77,40 @@ Requirement:
 docker build --build-arg NODE_VERSION=20 .
 Validate version is passed
 Fail build if not provided
+
+
+# Declare ARG globally
+ARG NODE_VERSION
+
+# Use ARG in FROM
+FROM node:${NODE_VERSION}-alpine AS build
+
+WORKDIR /app
+
+# Validate ARG (inside stage)
+RUN if [ -z "$NODE_VERSION" ]; then \
+      echo "❌ NODE_VERSION is required"; exit 1; \
+    fi
+
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
+FROM node:${NODE_VERSION}-alpine
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY --from=build /app .
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ✅ Task 3: Secure Build Secrets (Critical)
 
 👉 Pass secrets using ARG but ensure:
