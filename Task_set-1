@@ -28,6 +28,7 @@ Non-root users (USER)
 Minimal base images
 Manage secrets (never hardcode)
 
+Ref: check classmate notes for security handeling topic in docker portion
 
 ⚙️ 4. Docker Compose & Multi-Container Apps
 Design multi-service environments:
