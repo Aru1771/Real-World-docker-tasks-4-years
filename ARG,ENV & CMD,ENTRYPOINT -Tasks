@@ -121,6 +121,11 @@ Not visible in docker history
 👉 Bonus:
 
 Use multi-stage to hide secrets
+
+Docker BuildKit allows secure secret injection during the image build process using the --mount=type=secret feature. 
+Secrets are only available during specific build steps and are not stored in image layers or visible in Docker history,
+making it the most secure way to handle build-time secrets.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 ✅ Task 4: Feature Flag Build
 
 👉 Enable/disable feature at build time
