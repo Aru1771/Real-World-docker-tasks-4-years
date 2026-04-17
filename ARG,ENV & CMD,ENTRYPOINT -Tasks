@@ -135,6 +135,11 @@ Example:
 ENABLE_ANALYTICS=true
 Modify build output accordingly
 🌍 2. ENV (Runtime – Production Patterns)
+
+ARG is used to pass values during Docker image build, and those values are fixed once the image is built. 
+ENV variables are used at runtime, allowing us to change application behavior dynamically without rebuilding the image.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ✅ Task 5: Environment-Driven App Behavior
 
 👉 App should behave differently based on:
