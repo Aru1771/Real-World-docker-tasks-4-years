@@ -8,7 +8,7 @@ Convert a monolithic Dockerfile into multi-stage
 Reduce image size from 1GB → <200MB
 
 Ref: github node.js backend file from docker_files repo
-
+------------------------------------------------------------------------------------------------------------------------------------
 🚀 2. Containerization of Applications
 Containerize:
 Node.js / Python / Java apps
@@ -19,7 +19,7 @@ Health checks (HEALTHCHECK)
 Graceful shutdown
 
 Ref: github node.js backend file from docker_files repo in that we have Graceful shutdown 
-
+-------------------------------------------------------------------------------------------------------------------------------------
 🔐 3. Security Hardening
 Scan images using tools (e.g., Trivy)
 Remove vulnerabilities
@@ -29,6 +29,7 @@ Minimal base images
 Manage secrets (never hardcode)
 
 Ref: check classmate notes for security handeling topic in docker portion
+-------------------------------------------------------------------------------------------------------------------------------------
 
 ⚙️ 4. Docker Compose & Multi-Container Apps
 Design multi-service environments:
@@ -41,6 +42,7 @@ Example:
 Setup microservices with Redis + PostgreSQL
 
 Ref: check MERN stack repo 
+-------------------------------------------------------------------------------------------------------------------------------------
 
 
 📦 5. Image Management & Registries
@@ -50,6 +52,10 @@ Tagging strategies:
 latest, semantic versioning
 Automate pushes in CI/CD
 
+In production, we avoid using only the latest tag because it can lead to unpredictable deployments.
+Instead, we use versioned tags along with latest. We store images in private registries like AWS ECR for security, 
+scan them using tools like Trivy to detect vulnerabilities, and regularly clean up old images to reduce storage and maintain efficiency.
+-------------------------------------------------------------------------------------------------------------------------------------------------
 
 🔄 6. CI/CD Integration
 Build pipelines using:
