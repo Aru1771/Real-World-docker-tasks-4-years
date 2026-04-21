@@ -66,6 +66,13 @@ Push to registry
 Deploy to Kubernetes
 
 
+“We maintained separate deployment pipelines for dev, QA, and production. Dev deployments were automatic on commit, 
+QA deployments followed testing validation, and production deployments required manual approval gates. 
+We used Kubernetes ConfigMaps and Secrets to manage environment-specific configurations, 
+ensuring the same application image could be deployed across environments without code changes.”
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 ☸️ 7. Kubernetes Integration
 Use Docker images in:
 Deployments
