@@ -147,6 +147,105 @@ ENV variables are used at runtime, allowing us to change application behavior dy
 NODE_ENV
 LOG_LEVEL
 REGION
+
+✅ Task 5: Environment-Driven App Behavior
+
+Your app behavior is controlled using environment variables like:
+
+NODE_ENV
+LOG_LEVEL
+REGION
+🔹 1. What Each Variable Means
+🌱 NODE_ENV
+
+Controls application mode
+
+Value	Behavior
+dev	Debugging enabled, verbose logs
+qa	Testing mode
+production	Optimized, no debug logs
+📊 LOG_LEVEL
+
+Controls how much logging is printed
+
+Value	Logs
+debug	Everything
+info	Normal logs
+error	Only errors
+🌍 REGION
+
+Controls regional behavior
+
+Value	Use Case
+us-east-1	US users
+ap-south-1	India users
+eu-west-1	Europe
+🔹 2. Node.js Application Example
+const env = process.env.NODE_ENV || "dev";
+const logLevel = process.env.LOG_LEVEL || "info";
+const region = process.env.REGION || "ap-south-1";
+
+console.log(`Running in ${env} mode`);
+console.log(`Log level: ${logLevel}`);
+console.log(`Region: ${region}`);
+
+if (env === "production") {
+    console.log("Production optimizations enabled");
+}
+
+if (logLevel === "debug") {
+    console.log("Debug logs enabled");
+}
+🔹 3. Kubernetes Implementation (Best Practice)
+
+You pass these values using ConfigMaps + Secrets.
+
+📦 ConfigMap Example
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  NODE_ENV: "qa"
+  LOG_LEVEL: "debug"
+  REGION: "ap-south-1"
+🚀 Deployment YAML
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  template:
+    spec:
+      containers:
+      - name: app
+        image: my-app:latest
+        envFrom:
+        - configMapRef:
+            name: app-config
+🔹 4. Environment-Based Config Strategy
+Environment	NODE_ENV	LOG_LEVEL	REGION
+Dev	dev	debug	ap-south-1
+QA	qa	info	ap-south-1
+Prod	production	error	us-east-1
+
+👉 Same code
+👉 Different behavior
+
+🔥 5. Real CI/CD Flow
+
+Using Jenkins or GitHub Actions:
+
+Dev pipeline → inject dev config
+QA pipeline → inject QA config
+Prod pipeline → inject prod config
+🎯 Interview-Ready Answer
+
+“We designed our application to be environment-driven using variables like NODE_ENV, LOG_LEVEL, and REGION. 
+These values are injected at runtime using Kubernetes ConfigMaps, 
+allowing the same Docker image to behave differently across dev, QA, and production environments without code changes.”
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 ✅ Task 6: External Configuration Injection
 
 👉 Pass runtime configs:
